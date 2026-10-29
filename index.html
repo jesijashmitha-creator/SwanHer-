@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0f0b18">
+<meta name="description" content="Swan Her Chat — discover fictional characters and chat with them.">
+<title>Swan Her Chat</title>
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap");
+:root{--bg:#0f0b18;--panel:#221733;--panel2:#181020;--purple:#b987ff;--light:#d8b1ff;--text:#f7f0ff;--muted:#a99dbd;--border:#37254d;--danger:#ff718a;--good:#8ee6bd;--glow:rgba(185,135,255,.16);--serif:"Fraunces",Georgia,serif;--sans:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--text);font:400 15px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--serif);letter-spacing:-.01em;overflow-wrap:anywhere;margin:0 0 8px}
+h1{font-size:clamp(26px,5vw,36px);line-height:1.15}h2{font-size:22px}p{margin:0 0 12px}
+button,input,textarea,select{font:inherit}button{cursor:pointer;background:var(--panel);color:var(--text);border:1px solid var(--border);border-radius:999px;padding:10px 18px;font-weight:600;font-size:14px;transition:border-color .15s,transform .15s,filter .15s}button:hover{border-color:var(--purple)}button:active{transform:scale(.97)}button:disabled{opacity:.5;cursor:not-allowed}
+.primary{background:var(--purple);color:#1a0f2e;border-color:transparent;font-weight:700}.primary:hover{filter:brightness(1.08)}.danger{color:var(--danger)}.muted{color:var(--muted)}.hidden{display:none!important}:focus-visible{outline:2px solid var(--purple);outline-offset:2px}
+header{position:sticky;top:0;z-index:20;background:rgba(15,11,24,.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:10px 16px;padding-top:max(10px,env(safe-area-inset-top));display:flex;justify-content:space-between;align-items:center;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;font:700 19px var(--serif);min-width:0}.brand img{width:40px;height:40px;object-fit:cover;border-radius:50%;border:2px solid var(--purple);background:var(--panel)}.brand span{white-space:nowrap}.top-actions{display:flex;gap:8px;align-items:center}
+main{max-width:1100px;margin:auto;padding:22px 16px 110px}.page{display:none}.page.active{display:block;animation:fade .25s ease}@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.hero{padding:34px 24px;margin-bottom:18px;border-radius:26px;background:radial-gradient(120% 140% at 0% 0%,var(--glow),transparent 60%),var(--panel2);border:1px solid var(--border)}.hero h1{font-size:clamp(28px,6vw,46px);line-height:1.1;margin-bottom:12px}.hero p{max-width:52ch;color:var(--muted);margin-bottom:22px}.hero-actions,.controls,.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.controls{margin:14px 0}.controls input{flex:1 1 220px}.controls select{flex:0 1 170px}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 30px}.stat{padding:14px 16px;background:var(--panel2);border:1px solid var(--border);border-radius:18px;min-width:0;color:var(--muted);font-size:13px}.stat strong{display:block;font:700 26px var(--serif);color:var(--light)}
+.section-head{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}.section-head h1,.section-head h2{margin:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px}.card,.panel{min-width:0;background:var(--panel2);border:1px solid var(--border);border-radius:20px;padding:12px}.card{display:flex;flex-direction:column;transition:transform .18s,border-color .18s,box-shadow .18s}.card:hover{transform:translateY(-3px);border-color:var(--purple);box-shadow:0 12px 30px var(--glow)}.card img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:14px;background:linear-gradient(135deg,#2b1a40,#1a1126)}.card h3{font-size:17px;margin:12px 0 6px}.card p{flex:1;font-size:13px;color:var(--muted);line-height:1.5;margin:6px 0 12px}.card button{width:100%;margin-top:6px}
+.tag{display:inline-block;font-size:11.5px;font-weight:600;padding:3px 10px;margin:2px 4px 2px 0;border-radius:999px;background:#2d1d42;color:var(--light)}.panel{padding:18px;margin-bottom:14px}.panel button{margin:6px 8px 0 0}.panel h2{margin-bottom:4px}
+input,textarea,select{width:100%;padding:12px 14px;color:var(--text);background:#120c1b;border:1px solid var(--border);border-radius:14px;min-width:0}input:focus,textarea:focus,select:focus{outline:2px solid rgba(185,135,255,.4);border-color:var(--purple)}input[type=file]{padding:9px}textarea{resize:vertical;min-height:90px}label{display:block;margin:14px 0 6px;color:var(--light);font-size:13.5px;font-weight:600}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-bottom:16px}.preview{width:120px;height:120px;object-fit:cover;border-radius:16px;border:1px solid var(--border);display:block;margin-top:10px}.note{padding:12px 16px;border:1px solid var(--border);border-radius:14px;background:#1b1227;color:var(--muted);line-height:1.5;font-size:13.5px}.small{font-size:12px}.separator{height:1px;background:var(--border);margin:18px 0}.inline-check{display:flex;align-items:flex-start;gap:9px;color:var(--muted);font-size:13px}.inline-check input{width:auto;margin-top:4px}
+.mode-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:16px}.mode-card{padding:22px;border:1px solid var(--border);border-radius:22px;background:linear-gradient(145deg,#26163a,#150f1e)}.mode-card h2{margin-top:0}.mode-card .mode-icon{font-size:34px;margin-bottom:6px}
+.chat-heading{display:flex;align-items:center;gap:14px}.chat-heading img{width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid var(--purple)}.messages{height:50vh;min-height:260px;overflow:auto;padding:14px;background:#0c0812;border:1px solid var(--border);border-radius:18px;margin:16px 0}.message{padding:11px 15px;border-radius:18px;margin:10px 0;max-width:86%;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.5}.message.bot{background:#261a36;border:1px solid var(--border);border-bottom-left-radius:6px}.message.user{margin-left:auto;background:linear-gradient(135deg,#6a3fa0,#8a55c9);border-bottom-right-radius:6px}.chat-compose{display:flex;gap:8px;margin-bottom:10px}.chat-compose input{flex:1}.empty{grid-column:1/-1;padding:22px;text-align:center;color:var(--muted);border:1px dashed var(--border);border-radius:16px}.profile-top{display:flex;gap:16px;align-items:center}.profile-avatar{width:78px;height:78px;object-fit:cover;border-radius:50%;background:var(--panel);border:2px solid var(--purple)}.admin-lock{max-width:500px;margin:18px auto}
+footer{text-align:center;color:var(--muted);padding:20px 12px 110px;font-size:12px}.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:30;display:grid;grid-template-columns:repeat(5,1fr);gap:4px;padding:8px 8px calc(8px + env(safe-area-inset-bottom));background:rgba(15,11,24,.94);backdrop-filter:blur(14px);border-top:1px solid var(--border)}.bottom-nav button{border:0;background:transparent;border-radius:14px;padding:7px 2px;font-size:11px;font-weight:600;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:2px}.bottom-nav button span{font-size:19px;line-height:1.2}.bottom-nav button.active{background:#2a1a3e;color:var(--light)}
+@media(min-width:900px){.bottom-nav{max-width:520px;left:50%;right:auto;transform:translateX(-50%);bottom:14px;border:1px solid var(--border);border-radius:22px}}
+@media(max-width:650px){header{padding-left:12px;padding-right:12px}.brand{font-size:16px}.brand img{width:34px;height:34px}.top-actions button{padding:8px 12px}.top-actions .desktop-label{display:none}main{padding:14px 12px 110px}.hero{padding:24px 18px;border-radius:22px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.card{padding:9px;border-radius:16px}.card h3{font-size:15px}.card p{font-size:12.5px}.form-grid,.mode-grid{grid-template-columns:1fr}.stats{gap:8px}.stat{padding:11px 12px}.stat strong{font-size:21px}.chat-compose{flex-direction:column}.message{max-width:92%}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <img id="brandLogo" alt="Swan Her Chat logo" src="" onerror="this.src=DEFAULT_LOGO">
+    <span>Swan Her Chat</span>
+  </div>
+  <div class="top-actions">
+    <button id="profileTopBtn" type="button">Profile</button>
+  </div>
+</header>
+
+<main>
+  <section class="page active" id="homePage">
+    <div class="hero">
+      <h1>Find your next story.</h1>
+      <p>Meet fictional characters, explore different worlds, and let the conversation unfold.</p>
+      <div class="hero-actions">
+        <button class="primary" type="button" data-go="discoverPage">Discover characters</button>
+        <button type="button" data-go="createPage">Create a character</button>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat">Characters<strong id="characterStat">0</strong></div>
+      <div class="stat">Your messages<strong id="messageStat">0</strong></div>
+      <div class="stat">Your characters<strong id="createdStat">0</strong></div>
+    </div>
+    <div class="section-head"><h2>Featured characters</h2><button type="button" data-go="discoverPage">View all</button></div>
+    <div class="grid" id="featuredGrid"></div>
+    <p class="note" style="margin-top:16px">AI replies require your Cloudflare Worker URL and a correctly configured API key. Keep API keys on the server, never in this file.</p>
+  </section>
+
+  <section class="page" id="discoverPage">
+    <div class="section-head"><h1>Discover</h1><button type="button" data-go="createPage">＋ Create</button></div>
+    <div class="controls">
+      <input id="searchInput" type="search" placeholder="Search characters…" aria-label="Search characters">
+      <select id="genderFilter" aria-label="Filter by gender"><option value="">All genders</option><option>Female</option><option>Male</option><option>Non-binary</option><option>Genderfluid</option><option>Other</option></select>
+      <select id="genreFilter" aria-label="Filter by genre"><option value="">All genres</option><option>Fantasy</option><option>Romance</option><option>Adventure</option><option>Mystery</option><option>Slice of Life</option><option>Sci-Fi</option><option>Horror</option><option>Drama</option><option>Comedy</option></select>
+      <select id="typeFilter" aria-label="Filter by character type"><option value="">All characters</option><option value="public">Public</option><option value="mine">Created by me</option></select>
+    </div>
+    <div class="grid" id="characterGrid"></div>
+  </section>
+
+  <section class="page" id="chatPage">
+    <div class="panel">
+      <div class="chat-heading">
+        <img id="chatAvatar" alt="Character portrait" src="">
+        <div><h1 id="chatName">Choose a character</h1><div id="chatMeta" class="muted small"></div></div>
+      </div>
+      <p id="chatDescription" class="muted"></p>
+      <div id="messages" class="messages" aria-live="polite"></div>
+      <form id="chatForm" class="chat-compose">
+        <input id="chatInput" autocomplete="off" maxlength="2000" placeholder="Write a message…" aria-label="Your message">
+        <button class="primary" type="submit">Send</button>
+      </form>
+      <p class="muted small">Replies are generated by AI when the Worker is configured. Conversations are saved on this device.</p>
+      <button type="button" id="backDiscover">← Back to Discover</button>
+    </div>
+  </section>
+
+  <section class="page" id="createPage">
+    <div class="section-head"><h1>Create a character</h1></div>
+    <div class="panel">
+      <p class="muted">Create your own character. This simple version stores characters in this browser only.</p>
+      <form id="createForm">
+        <div class="form-grid">
+          <div><label for="characterName">Character name *</label><input id="characterName" required maxlength="60" placeholder="Name"></div>
+          <div><label for="characterGender">Gender</label><select id="characterGender"><option>Female</option><option>Male</option><option>Non-binary</option><option>Genderfluid</option><option>Other</option></select></div>
+          <div><label for="characterGenre">Genre</label><select id="characterGenre"><option>Fantasy</option><option>Romance</option><option>Adventure</option><option>Mystery</option><option>Slice of Life</option><option>Sci-Fi</option><option>Horror</option><option>Drama</option><option>Comedy</option></select></div>
+          <div><label for="characterImage">Character image (optional)</label><input id="characterImage" type="file" accept="image/*"><img id="characterImagePreview" class="preview hidden" alt="Character image preview"></div>
+        </div>
+        <label for="characterPersonality">Personality</label><textarea id="characterPersonality" maxlength="1500" placeholder="Describe how the character behaves…"></textarea>
+        <label for="characterBackstory">Backstory</label><textarea id="characterBackstory" maxlength="3000" placeholder="Where did they come from?"></textarea>
+        <label for="characterGreeting">Opening message</label><textarea id="characterGreeting" maxlength="1000" placeholder="Their first message to the user…"></textarea>
+        <label class="inline-check"><input id="characterPublic" type="checkbox" checked> Mark as public on this device (not published online)</label>
+        <button class="primary" type="submit">Save character</button>
+      </form>
+    </div>
+  </section>
+
+  <section class="page" id="profilePage">
+    <div class="section-head"><h1>Your profile</h1></div>
+    <div class="panel">
+      <div class="profile-top">
+        <img class="profile-avatar" id="profileAvatar" alt="Profile avatar" src="">
+        <div><h2 id="profileDisplayName">Guest</h2><p class="muted small">Local profile on this device</p></div>
+      </div>
+      <form id="profileForm">
+        <label for="profileNameInput">Display name</label><input id="profileNameInput" maxlength="40" placeholder="Your display name">
+        <label for="profileImageInput">Profile image (optional)</label><input id="profileImageInput" type="file" accept="image/*">
+        <button class="primary" type="submit">Save profile</button>
+      </form>
+    </div>
+    <div class="panel">
+      <h2>About AI setup</h2>
+      <p class="muted">Set your real Cloudflare Worker URL in the API_URL constant near the bottom of this file. Configure ANTHROPIC_API_KEY as a Worker secret and ALLOWED_ORIGIN as your exact GitHub Pages origin.</p>
+    </div>
+  </section>
+
+  <section class="page" id="adminPage">
+    <div class="section-head"><h1>Admin access</h1></div>
+    <div class="panel admin-lock">
+      <p class="muted">This is a local prototype gate, not secure production admin authentication. Do not store a real admin password in public frontend code.</p>
+      <form id="adminLoginForm">
+        <label for="adminPassword">Admin passcode</label><input id="adminPassword" type="password" autocomplete="current-password" required>
+        <button class="primary" type="submit">Unlock admin tools</button>
+      </form>
+      <div id="adminTools" class="hidden">
+        <div class="separator"></div>
+        <h2>Site settings (this device only)</h2>
+        <label for="logoUrlInput">Logo image URL</label><input id="logoUrlInput" placeholder="https://…">
+        <label for="logoFileInput">Or upload a logo image</label><input id="logoFileInput" type="file" accept="image/*">
+        <img id="adminLogoPreview" class="preview hidden" alt="Logo preview">
+        <label for="siteDescriptionInput">Homepage description</label><textarea id="siteDescriptionInput"></textarea>
+        <button class="primary" type="button" id="saveAdminSettings">Save settings</button>
+        <div class="separator"></div>
+        <h2>Chat moderation</h2>
+        <p class="muted small">Review locally saved conversations on this device. This cannot moderate other users' devices or remotely stored chats.</p>
+        <div id="adminChatList"></div>
+        <div class="separator"></div>
+        <h2>Manage characters on this device</h2>
+        <div id="adminCharacterList"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<nav class="bottom-nav" aria-label="Main navigation">
+  <button class="active" type="button" data-go="homePage"><span>⌂</span>Home</button>
+  <button type="button" data-go="discoverPage"><span>✧</span>Discover</button>
+  <button type="button" data-go="createPage"><span>＋</span>Create</button>
+  <button type="button" data-go="profilePage"><span>◉</span>Profile</button>
+  <button type="button" data-go="adminPage"><span>⚙</span>Admin</button>
+</nav>
+<footer>Made for stories and imagination · Swan Her Chat</footer>
+
+<script>
+"use strict";
+
+/*
+ * IMPORTANT SETUP:
+ * 1. Deploy your Cloudflare Worker and replace API_URL with its real URL.
+ * 2. Configure ANTHROPIC_API_KEY as a Worker secret, not in this file.
+ * 3. Set ALLOWED_ORIGIN to your site's exact origin, e.g. https://yourname.github.io
+ * 4. The admin passcode below is only a local demo gate. Anyone can inspect public JavaScript.
+ * 5. Admin moderation here can only inspect/delete chats saved in this browser. Global moderation
+ *    requires authenticated server-side storage and admin APIs.
+ */
+const API_URL = "https://YOUR-WORKER-NAME.YOUR-SUBDOMAIN.workers.dev";
+const ADMIN_DEMO_PASSCODE = "CHANGE-THIS-DEMO-PASSCODE";
+const DEFAULT_LOGO = "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="50" fill="#21152e"/><path d="M24 73c19-2 30-16 31-38 7 11 9 21 4 30 9-5 13-13 13-23 13 23-1 43-24 43H24z" fill="#d8b1ff"/><path d="M40 70c4-12 4-22 0-34" stroke="#b987ff" stroke-width="3" fill="none" stroke-linecap="round"/></svg>'
+);
+const STORAGE = {
+  characters: "swanher_characters_v1",
+  messages: "swanher_messages_v1",
+  profile: "swanher_profile_v1",
+  settings: "swanher_settings_v1",
+  count: "swanher_message_count_v1"
+};
+const clip = (s, n) => String(s ?? "").slice(0, n);
+const escapeHTML = (s) => String(s ?? "").replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+function readJSON(key, fallback) {
+  try { const value = localStorage.getItem(key); return value ? JSON.parse(value) : fallback; }
+  catch { return fallback; }
+}
+function saveJSON(key, value) {
+  try { localStorage.setItem(key, JSON.stringify(value)); return true; }
+  catch { alert("This browser could not save the data. The image or data may be too large; try a smaller image."); return false; }
+}
+function makeId() { return "c_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+function placeholderAvatar(label = "Swan Her Chat") {
+  const initials = clip(label, 2).toUpperCase() || "S";
+  return "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect width="200" height="200" fill="#21152e"/><circle cx="100" cy="100" r="78" fill="#2d1d42" stroke="#b987ff" stroke-width="3"/><text x="100" y="119" text-anchor="middle" font-size="64" fill="#d8b1ff" font-family="Georgia,serif">${initials}</text></svg>`
+  );
+}
+const starterCharacters = [
+  {id:"starter_1",name:"Arielle Moonwhisper",gender:"Female",genre:"Fantasy",personality:"Curious, warm, clever, and quietly brave. Loves riddles and old stories.",backstory:"A young archivist who discovers that an abandoned library records possible futures.",greeting:"The library door opens with a soft chime. “You came at last. Tell me—which story brought you here?”",image:"",public:true,owner:"starter"},
+  {id:"starter_2",name:"Kael Rowan",gender:"Male",genre:"Adventure",personality:"Dry-witted, loyal, observant, and more compassionate than he admits.",backstory:"A travelling mapmaker searching for a lost city beyond the mist.",greeting:"Kael folds a weathered map. “Good timing. I could use another pair of eyes. Do you trust a map that changes at night?”",image:"",public:true,owner:"starter"},
+  {id:"starter_3",name:"Mira Sol",gender:"Non-binary",genre:"Sci-Fi",personality:"Inventive, thoughtful, playful, and fascinated by human habits.",backstory:"A space-station mechanic who intercepted a mysterious signal from a quiet star.",greeting:"A small drone floats past your shoulder. Mira waves from beneath a console. “Please tell me you know what a singing engine means.”",image:"",public:true,owner:"starter"},
+  {id:"starter_4",name:"Devika Iyer",gender:"Female",genre:"Mystery",personality:"Sharp, patient, direct, and excellent at noticing small details.",backstory:"A student journalist investigating strange letters appearing around her old town.",greeting:"Devika sets a sealed envelope on the table. “I think this was meant for you. Before you open it, what do you know about the old clock tower?”",image:"",public:true,owner:"starter"},
+  {id:"starter_5",name:"Noah Vale",gender:"Male",genre:"Slice of Life",personality:"Gentle, funny, reliable, and a little awkward around new people.",backstory:"A night-shift café worker who collects forgotten book recommendations from customers.",greeting:"Noah slides a warm cup across the counter. “New face. Same rainy evening. Want a recommendation, or should I let you surprise me?”",image:"",public:true,owner:"starter"},
+  {id:"starter_6",name:"Sora Kaito",gender:"Genderfluid",genre:"Drama",personality:"Expressive, reflective, creative, and quietly determined.",backstory:"A street artist painting a mural that brings a divided neighbourhood together.",greeting:"Sora steps back from a wall of colour. “I can't decide what this painting needs next. A little chaos, maybe. What do you see?”",image:"",public:true,owner:"starter"}
+];
+let activeCharacter = null;
+let sending = false;
+function getCharacters() {
+  const saved = readJSON(STORAGE.characters, null);
+  if (Array.isArray(saved)) return saved;
+  saveJSON(STORAGE.characters, starterCharacters);
+  return starterCharacters.slice();
+}
+function setCharacters(list) { return saveJSON(STORAGE.characters, list); }
+function getMessageCount() { return Number(localStorage.getItem(STORAGE.count) || 0); }
+function getProfile() { return readJSON(STORAGE.profile, {name:"Guest", image:""}); }
+function getSettings() { return readJSON(STORAGE.settings, {logo:"", description:"Meet fictional characters, explore different worlds, and let the conversation unfold."}); }
+function showPage(pageId) {
+  document.querySelectorAll(".page").forEach(page => page.classList.toggle("active", page.id === pageId));
+  document.querySelectorAll(".bottom-nav [data-go]").forEach(btn => btn.classList.toggle("active", btn.dataset.go === pageId));
+  window.scrollTo({top:0, behavior:"smooth"});
+  if (pageId === "discoverPage") renderCharacters();
+  if (pageId === "profilePage") renderProfile();
+  if (pageId === "adminPage") renderAdminList();
+}
+document.querySelectorAll("[data-go]").forEach(btn => btn.addEventListener("click", () => showPage(btn.dataset.go)));
+document.getElementById("profileTopBtn").addEventListener("click", () => showPage("profilePage"));
+document.getElementById("backDiscover").addEventListener("click", () => showPage("discoverPage"));
+
+function characterCard(c) {
+  const image = c.image || placeholderAvatar(c.name);
+  return `<article class="card"><img loading="lazy" alt="" src="${escapeHTML(image)}"><h3>${escapeHTML(c.name)}</h3><div><span class="tag">${escapeHTML(c.gender || "Other")}</span><span class="tag">${escapeHTML(c.genre || "Drama")}</span></div><p>${escapeHTML(c.personality || c.description || "A new story is waiting to begin.")}</p><button class="primary" type="button" data-chat="${escapeHTML(c.id)}">Chat</button>${c.owner === "local" ? `<button type="button" class="danger" data-delete="${escapeHTML(c.id)}">Delete</button>` : ""}</article>`;
+}
+function bindCharacterButtons(root) {
+  root.querySelectorAll("[data-chat]").forEach(btn => btn.addEventListener("click", () => openChat(btn.dataset.chat)));
+  root.querySelectorAll("[data-delete]").forEach(btn => btn.addEventListener("click", () => deleteCharacter(btn.dataset.delete)));
+}
+function renderCharacters() {
+  const all = getCharacters();
+  const query = document.getElementById("searchInput").value.trim().toLowerCase();
+  const gender = document.getElementById("genderFilter").value;
+  const genre = document.getElementById("genreFilter").value;
+  const type = document.getElementById("typeFilter").value;
+  const filtered = all.filter(c => {
+    const haystack = [c.name,c.genre,c.gender,c.personality,c.backstory].join(" ").toLowerCase();
+    return (!query || haystack.includes(query)) && (!gender || c.gender === gender) && (!genre || c.genre === genre) &&
+      (!type || (type === "mine" ? c.owner === "local" : c.public !== false));
+  });
+  const grid = document.getElementById("characterGrid");
+  grid.innerHTML = filtered.length ? filtered.map(characterCard).join("") : '<div class="empty">No characters match those filters yet.</div>';
+  bindCharacterButtons(grid);
+  renderStats();
+}
+function renderFeatured() {
+  const grid = document.getElementById("featuredGrid");
+  grid.innerHTML = getCharacters().slice(0,4).map(characterCard).join("");
+  bindCharacterButtons(grid);
+}
+function renderStats() {
+  const chars = getCharacters();
+  document.getElementById("characterStat").textContent = chars.length;
+  document.getElementById("messageStat").textContent = getMessageCount();
+  document.getElementById("createdStat").textContent = chars.filter(c => c.owner === "local").length;
+}
+["searchInput","genderFilter","genreFilter","typeFilter"].forEach(id => document.getElementById(id).addEventListener("input", renderCharacters));
+
+function openChat(id) {
+  activeCharacter = getCharacters().find(c => c.id === id);
+  if (!activeCharacter) return;
+  document.getElementById("chatAvatar").src = activeCharacter.image || placeholderAvatar(activeCharacter.name);
+  document.getElementById("chatName").textContent = activeCharacter.name;
+  document.getElementById("chatMeta").textContent = `${activeCharacter.gender || "Other"} · ${activeCharacter.genre || "Drama"}`;
+  document.getElementById("chatDescription").textContent = activeCharacter.personality || activeCharacter.description || "";
+  const all = readJSON(STORAGE.messages, {});
+  if (!Array.isArray(all[id]) || !all[id].length) {
+    all[id] = [{from:"bot",text:activeCharacter.greeting || `Hi! I'm ${activeCharacter.name}. What would you like to talk about?`}];
+    saveJSON(STORAGE.messages, all);
+  }
+  renderMessages();
+  showPage("chatPage");
+  document.getElementById("chatInput").focus();
+}
+function renderMessages() {
+  if (!activeCharacter) return;
+  const all = readJSON(STORAGE.messages, {});
+  const messages = Array.isArray(all[activeCharacter.id]) ? all[activeCharacter.id] : [];
+  const box = document.getElementById("messages");
+  box.innerHTML = messages.map(m => `<div class="message ${m.from === "user" ? "user" : "bot"}">${escapeHTML(m.text)}</div>`).join("");
+  box.scrollTop = box.scrollHeight;
+}
+async function aiReply(c, messages) {
+  if (!API_URL || API_URL.includes("YOUR-WORKER-NAME")) throw new Error("Set API_URL to your deployed Worker URL.");
+  const r = await fetch(API_URL, {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({
+      character: {name:c.name,gender:c.gender,genre:c.genre,personality:c.personality || c.description,backstory:c.backstory,greeting:c.greeting},
+      messages: messages.slice(-20)
+    })
+  });
+  if (!r.ok) throw new Error("API " + r.status);
+  const data = await r.json();
+  if (!data.reply) throw new Error("Empty reply");
+  return data.reply;
+}
+document.getElementById("chatForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  if (!activeCharacter || sending) return;
+  const c = activeCharacter;
+  const input = document.getElementById("chatInput");
+  const btn = e.target.querySelector('button[type="submit"]');
+  const text = input.value.trim();
+  if (!text) return;
+  const all = readJSON(STORAGE.messages, {});
+  const messages = Array.isArray(all[c.id]) ? all[c.id] : [];
+  messages.push({from:"user",text:clip(text,2000)});
+  all[c.id] = messages;
+  if (!saveJSON(STORAGE.messages, all)) return;
+  localStorage.setItem(STORAGE.count, String(getMessageCount()+1));
+  input.value = "";
+  renderMessages();
+  renderStats();
+  sending = true; btn.disabled = true; btn.textContent = "…";
+  const box = document.getElementById("messages");
+  const typing = document.createElement("div");
+  typing.className = "message bot muted"; typing.id = "typing"; typing.textContent = c.name + " is typing…";
+  box.appendChild(typing); box.scrollTop = box.scrollHeight;
+  let reply;
+  try {
+    reply = await aiReply(c, messages);
+  } catch (err) {
+    console.error("Swan Her Chat AI request failed:", err);
+    reply = "I couldn't connect to the AI service just now. Please check the Worker URL, API key, and allowed website origin, then try again.";
+  }
+  const latest = readJSON(STORAGE.messages, {});
+  const conversation = Array.isArray(latest[c.id]) ? latest[c.id] : [];
+  conversation.push({from:"bot",text:reply});
+  latest[c.id] = conversation;
+  saveJSON(STORAGE.messages, latest);
+  sending = false; btn.disabled = false; btn.textContent = "Send";
+  if (activeCharacter && activeCharacter.id === c.id) renderMessages();
+});
+
+function fileToDataURL(file) {
+  return new Promise((resolve,reject) => {
+    if (!file) return resolve("");
+    if (!file.type.startsWith("image/")) return reject(new Error("Please choose an image file."));
+    if (file.size > 900000) return reject(new Error("Please choose an image under 900 KB for browser storage."));
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result));
+    reader.onerror = () => reject(new Error("Could not read that image."));
+    reader.readAsDataURL(file);
+  });
+}
+document.getElementById("createForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const submit = e.target.querySelector('button[type="submit"]');
+  submit.disabled = true;
+  try {
+    const name = document.getElementById("characterName").value.trim();
+    if (!name) return;
+    const image = await fileToDataURL(document.getElementById("characterImage").files[0]);
+    const chars = getCharacters();
+    chars.unshift({
+      id:makeId(),name,gender:document.getElementById("characterGender").value,genre:document.getElementById("characterGenre").value,
+      personality:document.getElementById("characterPersonality").value.trim(),backstory:document.getElementById("characterBackstory").value.trim(),
+      greeting:document.getElementById("characterGreeting").value.trim(),image,public:document.getElementById("characterPublic").checked,owner:"local"
+    });
+    if (setCharacters(chars)) {
+      e.target.reset(); renderFeatured(); renderCharacters(); renderStats(); showPage("discoverPage");
+      alert("Character saved on this device.");
+    }
+  } catch (err) { alert(err.message || "Could not save character."); }
+  finally { submit.disabled = false; }
+});
+function deleteCharacter(id) {
+  const c = getCharacters().find(item => item.id === id);
+  if (!c || c.owner !== "local") return alert("Only characters you created on this device can be deleted here.");
+  if (!confirm(`Delete ${c.name}? This also removes its saved conversation.`)) return;
+  setCharacters(getCharacters().filter(item => item.id !== id));
+  const all = readJSON(STORAGE.messages, {}); delete all[id]; saveJSON(STORAGE.messages, all);
+  renderFeatured(); renderCharacters(); renderStats(); renderAdminList();
+}
+async function renderProfile() {
+  const p = getProfile();
+  document.getElementById("profileDisplayName").textContent = p.name || "Guest";
+  document.getElementById("profileNameInput").value = p.name === "Guest" ? "" : (p.name || "");
+  document.getElementById("profileAvatar").src = p.image || placeholderAvatar(p.name || "Guest");
+}
+document.getElementById("profileForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  try {
+    const name = document.getElementById("profileNameInput").value.trim() || "Guest";
+    const old = getProfile();
+    const picked = document.getElementById("profileImageInput").files[0];
+    const image = picked ? await fileToDataURL(picked) : old.image || "";
+    if (saveJSON(STORAGE.profile,{name,image})) { renderProfile(); alert("Profile saved on this device."); }
+  } catch(err) { alert(err.message || "Could not save profile."); }
+});
+function renderAdminList() {
+  const holder = document.getElementById("adminCharacterList");
+  if (!holder) return;
+  const chars = getCharacters().filter(c => c.owner === "local");
+  holder.innerHTML = chars.length ? chars.map(c => `<div class="row" style="justify-content:space-between;margin:8px 0"><span>${escapeHTML(c.name)}</span><button type="button" class="danger" data-admin-delete="${escapeHTML(c.id)}">Delete</button></div>`).join("") : '<p class="muted">No locally created characters yet.</p>';
+  holder.querySelectorAll("[data-admin-delete]").forEach(btn => btn.addEventListener("click", () => deleteCharacter(btn.dataset.adminDelete)));
+}
+document.getElementById("adminLoginForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const input = document.getElementById("adminPassword");
+  if (input.value !== ADMIN_DEMO_PASSCODE || ADMIN_DEMO_PASSCODE === "CHANGE-THIS-DEMO-PASSCODE") {
+    alert("Admin demo passcode is not configured correctly. Remember: a password inside public frontend code is not secure.");
+    return;
+  }
+  document.getElementById("adminTools").classList.remove("hidden");
+  renderAdminList();
+  renderAdminChats();
+});
+document.getElementById("logoFileInput").addEventListener("change", async e => {
+  const file = e.target.files && e.target.files[0];
+  const preview = document.getElementById("adminLogoPreview");
+  if (!file) { preview.classList.add("hidden"); return; }
+  try {
+    const data = await fileToDataURL(file);
+    preview.src = data; preview.classList.remove("hidden");
+  } catch (err) { alert(err.message || "Could not preview logo."); e.target.value = ""; }
+});
+document.getElementById("characterImage").addEventListener("change", async e => {
+  const preview = document.getElementById("characterImagePreview");
+  const file = e.target.files && e.target.files[0];
+  if (!file) { preview.classList.add("hidden"); preview.removeAttribute("src"); return; }
+  try {
+    preview.src = await fileToDataURL(file); preview.classList.remove("hidden");
+  } catch (err) { alert(err.message || "Could not preview character image."); e.target.value = ""; }
+});
+document.getElementById("saveAdminSettings").addEventListener("click", async () => {
+  let logo = document.getElementById("logoUrlInput").value.trim();
+  const file = document.getElementById("logoFileInput").files[0];
+  try {
+    if (file) logo = await fileToDataURL(file);
+    const settings = {
+      logo,
+      description:document.getElementById("siteDescriptionInput").value.trim()
+    };
+    if (!saveJSON(STORAGE.settings,settings)) return;
+    applySettings(); alert("Settings saved on this device.");
+  } catch (err) { alert(err.message || "Could not save settings."); }
+});
+function applySettings() {
+  const settings = getSettings();
+  document.getElementById("brandLogo").src = settings.logo || DEFAULT_LOGO;
+  const p = document.querySelector(".hero p");
+  if (p) p.textContent = settings.description || "Meet fictional characters, explore different worlds, and let the conversation unfold.";
+  document.getElementById("logoUrlInput").value = settings.logo && !settings.logo.startsWith("data:") ? settings.logo : "";
+  document.getElementById("siteDescriptionInput").value = settings.description || "";
+  const preview = document.getElementById("adminLogoPreview");
+  if (settings.logo && settings.logo.startsWith("data:")) { preview.src = settings.logo; preview.classList.remove("hidden"); }
+  else preview.classList.add("hidden");
+}
+function renderAdminChats() {
+  const holder = document.getElementById("adminChatList");
+  if (!holder) return;
+  const conversations = readJSON(STORAGE.messages, {});
+  const characters = getCharacters();
+  const rows = Object.entries(conversations).filter(([, msgs]) => Array.isArray(msgs) && msgs.length);
+  if (!rows.length) { holder.innerHTML = '<p class="muted">No saved conversations on this device.</p>'; return; }
+  holder.innerHTML = rows.map(([id, msgs]) => {
+    const character = characters.find(c => c.id === id);
+    const label = character ? character.name : "Unknown character";
+    const transcript = msgs.map(m => `${m.from === "user" ? "User" : label}: ${m.text}`).join("\\n");
+    return `<div class="panel"><h3>${escapeHTML(label)}</h3><p class="muted small">${msgs.length} messages saved</p><details><summary>Review conversation</summary><pre style="white-space:pre-wrap;overflow-wrap:anywhere">${escapeHTML(transcript)}</pre></details><button type="button" class="danger" data-clear-chat="${escapeHTML(id)}">Delete conversation</button></div>`;
+  }).join("");
+  holder.querySelectorAll("[data-clear-chat]").forEach(btn => btn.addEventListener("click", () => {
+    const id = btn.dataset.clearChat;
+    if (!confirm("Permanently delete this conversation from this browser?")) return;
+    const latest = readJSON(STORAGE.messages, {}); delete latest[id]; saveJSON(STORAGE.messages, latest);
+    renderAdminChats();
+    if (activeCharacter && activeCharacter.id === id) renderMessages();
+  }));
+}
+function init() {
+  // Initialise starter characters only on first visit; do not overwrite saved characters.
+  if (!Array.isArray(readJSON(STORAGE.characters,null))) saveJSON(STORAGE.characters,starterCharacters);
+  applySettings();
+  renderFeatured(); renderCharacters(); renderStats(); renderProfile();
+}
+init();
+</script>
+</body>
+</html>
